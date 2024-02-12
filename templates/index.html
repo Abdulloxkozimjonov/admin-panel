@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% block content %}
+						<!--begin::Subheader-->
+
+						<!--end::Subheader-->
+						<!--begin::Subheader-->
+
+						<!--end::Subheader-->
+						<!--begin::Card-->
+
+						<!--end::Card-->
+										<!--begin::Card-->
+
+								<!--end::Card-->
+								<!--begin::Card-->
+								<div class="card card-custom">
+									<div class="card-header flex-wrap py-5">
+										<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModalCenter">Create</button>
+										<div class="modal fade" id="exampleModalCenter" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+											<div class="modal-dialog modal-dialog-centered" role="document">
+												<div class="modal-content" >
+													<div class="card card-custom">
+														 <div class="card-header">
+														 </div>
+														 <!--begin::Form-->
+														 <form class="form" action="{% url 'create_xaridorlar_url' %}" method="post">
+															 {% csrf_token %}
+														  	<div class="card-body">
+														   		<div class="form-group form-group-last">
+														   			</div>
+														   		<div class="form-group">
+																	<label>Email</label>
+																	<input type="email"  class="form-control form-control-lg"  placeholder="Email" name="email" />
+														   		</div>
+														   		<div class="form-group">
+																	<label>Ism</label>
+																	<input type="text" class="form-control"  placeholder="Ism" name="ism" />
+																</div>
+																<div class="form-group" >
+																	<label>Familya</label>
+																	<input type="text" class="form-control" placeholder="Familya" name="familya" />
+																</div>
+																<div class="form-group" >
+																	<label>Telefon raqam</label>
+																	<input type="text" class="form-control" placeholder="Telefon raqam" name="tel_raqam" />
+																</div>
+														  		<div class="modal-footer">
+																		<button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+																		<button type="submit"  class="btn btn-primary font-weight-bold">Save changes</button>
+																	</div>
+														  		</div>
+														 </form>
+														</div>
+												</div>
+											</div>
+										</div>
+										<div class="card-title" >
+											<h3 class="card-label">Yangi Xaridorlar Royhati</h3>
+										</div>
+										<div class="card-toolbar">
+											<!--begin::Dropdown-->
+											<!--end::Dropdown-->
+											<!--begin::Button-->
+
+											<!--end::Button-->
+										</div>
+									</div>
+											<div class="card-body">
+
+												<!--begin: Datatable-->
+												<table class="table table-separate table-head-custom table-checkable" id="kt_datatable">
+													<thead>
+														<tr>
+															<th>ID</th>
+															<th>Ism</th>
+															<th>Familya</th>
+															<th>Email</th>
+															<th>Phone</th>
+															<th> </th>
+														</tr>
+													</thead>
+
+													<tbody>
+													{% for i in a %}
+														<tr>
+															<td>{{ i.id }}</td>
+															<td>{{ i.ism }}</td>
+															<td>{{ i.familya }}</td>
+															<td>{{ i.email }}</td>
+															<td>{{ i.tel_raqam }}</td>
+															<td>
+																<div class="dropdown">
+																	<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+																		Crud
+																	</button>
+																	<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+																		<a class="dropdown-item" href="#">Update</a>
+																		<a class="dropdown-item" href="#">Delete</a>
+																	</div>
+																</div>
+															</td>
+														</tr>
+													{% endfor %}
+													</tbody>
+												</table>
+												{% if a.paginator.num_pages > 1 %}
+												  <div class="card-footer d-flex justify-content-end">
+													<nav aria-label="Page navigation">
+													  <ul class="pagination">
+														{% if a.has_previous %}
+														  <li class="page-item">
+															<a class="page-link" href="?page={{ a.previous_page_number }}">
+															  Previous
+															</a>
+														  </li>
+
+														{% endif %}
+														{% for num in a.paginator.page_range %}
+														{% if num == a.number %}
+														<li class="page-item active">
+														  <a class="page-link" href="#" tabindex="-1">{{ num }}</a>
+														</li>
+														{% elif num > a.number|add:'-2' and num < a.number|add:'2' %}
+														<li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+														{% endif %}
+														{% endfor %}
+														{% if a.has_next %}
+														<li class="page-item">
+														  <a class="page-link" href="?page={{ a.next_page_number }}">
+															Next
+														  </a>
+														</li>
+														{% endif %}
+													  </ul>
+													</nav>
+												  </div>
+											  {% endif %}
+												<!--end: Datatable-->
+											</div>
+										</div><hr>
+								<!--end::Card-->
+						<!--begin::Entry-->
+						<div class="d-flex flex-column-fluid">
+							<!--begin::Container-->
+							<div class="container">
+								<!--begin::Dashboard-->
+								<!--begin::Row-->
+
+
+
+								<!--begin::Card-->
+								<!--end::Card-->
+								<!--begin::Card-->
+										</div>
+								<!--end::Card-->
+							</div>
+							<div class="row">
+            <div class="col-12 col-lg-12 d-flex">
+              <div class="card flex-fill w-100">
+                <div class="card-body">
+                <div class="card">
+                <div>
+                  <canvas id="myChart"></canvas>
+                </div>
+
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script>
+                    const ctx = document.getElementById('myChart');
+                    new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                      labels: [{% for i in qs %} "{{ i.day }} {{ i.mon }}", "week",  {% endfor %}],
+                      datasets: [{
+                      label: 'Diagramma',
+                      label: '# of Votes',
+                      data: [{% for x in qs %} {{ x.n }}, {% endfor %}],
+                      borderWidth: 2
+                      }]
+                    },
+                    options: {
+                      scales: {
+                      y: {
+                      beginAtZero: true
+                      }
+                      }
+                    }
+                    });
+				</script>
+                </div>
+                </div>
+                </div>
+              </div>
+            </div>
+
+							<!--end::Container-->
+						<!--begin::Row-->
+
+						<!--end::Row-->
+						<!--end::Entry-->
+					<!--end::Content-->
+{% endblock %}
